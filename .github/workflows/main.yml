@@ -1,0 +1,20 @@
+name: Build Game
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: |
+          unzip -o retro-platformer-game-development.zip
+          sed -i 's/<\/head>/<script src="https:\/\/://crazygames.com\/crazygames-sdk-v3.js"><\/script><\/head>/' index.html
+          npm install
+          npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: crazygames-ready
+          path: dist/
